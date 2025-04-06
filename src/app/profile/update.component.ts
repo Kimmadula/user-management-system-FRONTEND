@@ -3,13 +3,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AccountService, AlertService } from '@app/_services';
-import { MustMatch } from '@app/_helpers';
+import { AccountService, AlertService } from '../_services';
+import { MustMatch } from '../_helpers';
 
 @Component({ templateUrl: 'update.component.html' })
 export class UpdateComponent implements OnInit {
     account = this.accountService.accountValue;
-    form: UntypedFormGroup;
+    form!: UntypedFormGroup;
     loading = false;
     submitted = false;
     deleting = false;
@@ -50,7 +50,7 @@ export class UpdateComponent implements OnInit {
         }
     
         this.loading = true;
-        this.accountService.update(this.account.id, this.form.value)
+        this.accountService.update(this.account.id!, this.form.value)
             .pipe(first())
             .subscribe({
                 next: () => {
@@ -67,7 +67,7 @@ export class UpdateComponent implements OnInit {
     onDelete() {
         if (confirm('Are you sure?')) {
             this.deleting = true;
-            this.accountService.delete(this.account.id)
+            this.accountService.delete(this.account.id!)
                 .pipe(first())
                 .subscribe(() => {
                     this.alertService.success('Account deleted successfully', { keepAfterRouteChange: true });
