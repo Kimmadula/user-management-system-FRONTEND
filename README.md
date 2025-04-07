@@ -1,27 +1,54 @@
 # UserManagementSystem
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.15.
+1. Introduction:
+A full-stack user management system built with Node.js, MySQL, and Angular 17. This system allows users to register, verify their email, and log in securely. Admins can manage users, while developers can simulate data using a fake backend for frontend development. The project implements secure JWT authentication, role-based access, and essential account recovery features.
 
-## Development server
+2. Installation Instructions:
+-Clone the repository
+git clone https://github.com/Kimmadula/user-management-system-FRONTEND.git
+cd user-managament-system-FRONTEND
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+-Install dependencies
+npm install
+npm install -g @angular/cli
 
-## Code scaffolding
+3. Usage:
+Email Sign-Up & Verification
+Navigate to http://localhost:4000/accounts/register
+Fill out the form to create an account.
+An email with a verification link will be sent.
+Click the link to activate your account.
+Proceed to log in via http://localhost:4000/accounts/login
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Other Features (Team Collaboration)
+Profile Management: /profile
+Admin Dashboard: /admin
+Role-based access redirects based on user roles.
+Password reset and recovery available via /accounts/reset-password
 
-## Build
+4. Testing: 
+Functional Testing
+Verified registration, email confirmation, and login processes.
+Security Testing
+Input validation, CSRF protection, and token verification tested.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+5. Contributing:
+Implement the sign-up, verification, and login components in the Angular boilerplate.
 
-## Running unit tests
+-Create a new branch for the feature
+git checkout -b Gijan-frontend-signup-auth
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+-Make changes, then stage them
+git add. 
 
-## Running end-to-end tests
+-Commit changes often with  messages
+git commit -m "Implement email sign-up, verification, and authentication"
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+-Push branch and submit a Pull Request
+git push origin Gijan-frontend-signup-auth
 
-## Further help
+Open a Pull Request (PR) on GitHub targeting the main branch.
+Then the Group Leader will review and merge into main.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+6. License:
+This project is licensed under the MIT License.
