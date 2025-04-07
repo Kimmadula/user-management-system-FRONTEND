@@ -1,6 +1,6 @@
 import { Role } from './role';
 export class Account {
-    id?: string;
+    id?: number;     // string or number
     title?: string;
     firstName?: string;
     lastName?: string;
@@ -9,4 +9,13 @@ export class Account {
     jwtToken?: string;
     dateCreated?: string;
     isVerified?: boolean;
+    refreshTokens: string[];
+    verificationToken?: string;
+    password?: string;
+    resetToken?: string; 
+    resetTokenExpires?: string;
+
+    constructor() {
+        this.refreshTokens = []; 
+    }
 }

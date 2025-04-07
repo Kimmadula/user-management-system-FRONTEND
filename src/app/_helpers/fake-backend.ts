@@ -35,7 +35,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 case url.endsWith('/accounts/forgot—password') && method === 'POST':
                     return forgotPassword();
                 case url.endsWith('/accounts/validate-reset-token') && method === 'POST':
-                    return validateResetToken();
+                    // const body = JSON.parse(requestBody);
+                    return validateResetToken(body);
                 case url.endsWith('/accounts/reset-password') && method === 'POST':
                     return resetPassword();
                 case url.endsWith('/accounts') && method === 'GET':
@@ -58,17 +59,17 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function authenticate() {
         const { email, password } = body;
-        const account = accounts.find(x => x.email === email && x.password === password && x.isVerified);
-        
+        const account = accounts.find((x: Account) => x.email === email && x.password === password && x.isVerified);
+      
         if (!account) return error('Email or password is incorrect');
-
+      
         // add refresh token to account
         account.refreshTokens.push(generateRefreshToken());
         localStorage.setItem(accountsKey, JSON.stringify(accounts));
-
+      
         return ok({
-            ...basicDetails(account),
-            jwtToken: generateJwtToken(account)
+          ...basicDetails(account),
+          jwtToken: generateJwtToken(account)
         });
     }
 
@@ -77,12 +78,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         if (!refreshToken) return unauthorized();
 
-        const account = accounts.find(x => x.refreshTokens.includes(refreshToken));
+        const account = accounts.find((x: Account) => x.refreshTokens.includes(refreshToken));
 
         if (!account) return unauthorized();
 
         // replace old refresh token with a new one and save
-        account.refreshTokens = account.refreshTokens.filter(x => x !== refreshToken);
+        account.refreshTokens = account.refreshTokens.filter((x: string) => x !== refreshToken);
         account.refreshTokens.push( generateRefreshToken());
         localStorage.setItem(accountsKey, JSON.stringify(accounts));
 
@@ -96,10 +97,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         if (!isAuthenticated()) return unauthorized();
 
         const refreshToken = getRefreshToken();
-        const account = accounts.find(x => x.refreshTokens.includes(refreshToken));
+        const account = accounts.find((x: Account) => x.refreshTokens.includes(refreshToken));
 
         // revoke token and save
-        account.refreshTokens = account.refreshTokens.filter(x => x !== refreshToken);
+        account.refreshTokens = account.refreshTokens.filter((x: string) => x !== refreshToken);
         localStorage.setItem(accountsKey, JSON.stringify(accounts));
         
         return ok();
@@ -108,7 +109,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     function register() {
         const account = body;
 
-        if (accounts.find(x => x.email === account.email)) {
+        if (accounts.find((x: Account) => x.email === account.email)) {
             setTimeout(() => {
                 alertService.info(`
                     <h4>Already Registered</h4>
@@ -151,7 +152,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function verifyEmail() {
         const { token } = body;
-        const account = accounts.find(x => !!x.verificationToken && x.verificationToken === token);
+        const account = accounts.find((x: Account) => !!x.verificationToken && x.verificationToken === token);
         if (!account) return error( 'Verification failed');
 
         account.isVerified = true;
@@ -162,7 +163,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function forgotPassword() {
         const { email } = body;
-        const account = accounts.find(x => x.email === email);
+        const account = accounts.find((x: Account) => x.email === email);
       
         // always return ok() response to prevent email enumeration
         if (!account) return ok();
@@ -187,12 +188,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         return ok();
     }
 
-    function validateResetToken() {
+    function validateResetToken(body: { token: string }) {
         const { token } = body;
-        const account = accounts.find(x =>
-          !!x.resetToken && x.resetToken === token &&
-          new Date() < new Date(x.resetTokenExpires)
-        );
+        const account = accounts.find((x: Account) => 
+            !!x.resetToken && x.resetToken === token && 
+            x.resetTokenExpires && new Date() < new Date(x.resetTokenExpires));
       
         if (!account) return error('Invalid token');
       
@@ -201,9 +201,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function resetPassword() {
         const { token, password } = body;
-        const account = accounts.find(x =>
-          !!x.resetToken && x.resetToken === token &&
-          new Date() < new Date(x.resetTokenExpires)
+        const account = accounts.find((x: Account) =>
+            !!x.resetToken && x.resetToken === token && 
+            x.resetTokenExpires &&new Date() < new Date(x.resetTokenExpires)
         );
       
         if (!account) return error('Invalid token');
@@ -220,28 +220,42 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       
     function getAccounts() {
         if (!isAuthenticated()) return unauthorized();
-        return ok(accounts.map(x => basicDetails(x)));
+        return ok(accounts.map((x: Account) => basicDetails(x)));
       }
       
-      function getAccountById() {
+    function getAccountById() {
         if (!isAuthenticated()) return unauthorized();
-      
-        let account = accounts.find(x => x.id === idFromUrl());
-      
-        // user accounts can get own profile and admin accounts can get all profiles
-        if (account.id !== currentAccount().id && !isAuthorized(Role.Admin)) {
-          return unauthorized();
+    
+        const id = idFromUrl();
+    
+        if (!id) {
+            return error('Account ID is required');
         }
-      
+    
+        // Use optional chaining and strict type check
+        const account = accounts.find((x: Account) => x.id === id);
+    
+        if (!account) return error('Account not found');
+    
+        const current = currentAccount();
+        if (!current || current.id === undefined) {
+            return unauthorized();
+        }
+    
+        if (account.id !== current.id && !isAuthorized(Role.Admin)) {
+            return unauthorized();
+        }
+    
         return ok(basicDetails(account));
     }
+    
 
     function createAccount() {
         if (!isAuthorized(Role.Admin)) return unauthorized();
       
         const account = body;
       
-        if (accounts.find(x => x.email === account.email)) {
+        if (accounts.find((x: Account) => x.email === account.email)) {
           return error(`Email ${account.email} is already registered`);
         }
       
@@ -259,42 +273,56 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function updateAccount() {
         if (!isAuthenticated()) return unauthorized();
-      
-        let params = body;
-        let account = accounts.find(x => x.id === idFromUrl());
-      
-        // user accounts can update own profile and admin accounts can update all profiles
-        if (account.id !== currentAccount().id && !isAuthorized(Role.Admin)) {
-          return unauthorized();
-        }
-      
-        // only update password if included
-        if (!params.password) {
-          delete params.password;
-        }
-        // don't save confirm password
-        delete params.confirmPassword;
-      
-        // update and save account
-        Object.assign(account, params);
-        localStorage.setItem(accountsKey, JSON.stringify(accounts));
-      
-        return ok(basicDetails(account));
-    }
-
-    function deleteAccount() {
-        if (!isAuthenticated()) return unauthorized();
-
-        let account = accounts. find(x => x.id === idFromUrl());
-
-        if (account.id !== currentAccount().id &&  !isAuthorized(Role.Admin)) {
+    
+        const params = body;
+        const id = idFromUrl();
+    
+        const account = accounts.find((x: Account) => x.id === id);
+    
+        if (!account) return error('Account not found');
+    
+        const current = currentAccount();
+        if (!current || !current.id) return unauthorized();
+    
+        if (account.id !== current.id && !isAuthorized(Role.Admin)) {
             return unauthorized();
         }
-        // delete account then save
-        accounts = accounts. fitter(x => x.id !== idFromUrl());
-        localStorage. setItem(accountsKey, JSON.stringify(accounts));
+    
+        if (!params.password) {
+            delete params.password;
+        }
+    
+        delete params.confirmPassword;
+    
+        Object.assign(account, params);
+        localStorage.setItem(accountsKey, JSON.stringify(accounts));
+    
+        return ok(basicDetails(account));
+    }
+    
+
+    function deleteAccount() { 
+        if (!isAuthenticated()) return unauthorized();
+    
+        const accountId = idFromUrl();
+        if (!accountId) return error('Account ID is required');
+    
+        const account = accounts.find((x: Account) => x.id === accountId);
+        if (!account) return error('Account not found');
+    
+        const current = currentAccount();
+        if (!current || !current.id) return unauthorized();
+    
+        if (account.id !== current.id && !isAuthorized(Role.Admin)) {
+            return unauthorized();
+        }
+    
+        accounts = accounts.filter((x: Account) => x.id !== accountId);
+        localStorage.setItem(accountsKey, JSON.stringify(accounts));
+    
         return ok();
     }
+    
 
     function ok(body?: any) {
         return of(new HttpResponse({ status: 200, body }))
@@ -331,10 +359,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         return parseInt(urlParts[urlParts.length - 1]);
     }
     
-    function newAccountId() {
+    function newAccountId() { 
         const accounts: Account[] = JSON.parse(localStorage.getItem(accountsKey) || '[]');
-        return accounts.length ? Math.max(...accounts.map((x: Account) => x.id ? parseInt(x.id, 10) : 0)) + 1 : 1;
-      }
+        return accounts.length ? Math.max(...accounts.map((x: Account) => x.id ? x.id : 0)) + 1 : 1;
+    }
       
     function currentAccount(): Account | undefined {
         const authHeader = headers.get('Authorization');

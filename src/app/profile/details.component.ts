@@ -6,5 +6,5 @@ import { AccountService } from '../_services';
 export class DetailsComponent {
     account = this.accountService.accountValue;
 
-    constructor(private account.Service: AccountService) { }
+    constructor(private accountService: AccountService) { }
 }
