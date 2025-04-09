@@ -1,27 +1,62 @@
-# UserManagementSystem
+# User Management System
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.15.
+## 1. Introduction:
+A full-stack user management system built with Node.js, MySQL, and Angular 17. This system allows users to register, verify their email, and log in securely. Admins can manage users, while developers can simulate data using a fake backend for frontend development. The project implements secure JWT authentication, role-based access, and essential account recovery features.
 
-## Development server
+## 2. Installation Instructions:
+### Clone the repository
+git clone https://github.com/Kimmadula/user-management-system-FRONTEND.git
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+cd user-managament-system-FRONTEND
 
-## Code scaffolding
+### Install Dependencies
+- npm install
+- npm install bootstrap
+- npm install -g @angular/cli
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Create initial starter app
+ng new user-management-system
 
-## Build
+### Run Angular app
+ng serve
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 3. Usage:
+- Email Sign-Up & Verification
+- Navigate to http://localhost:4200/accounts/register
+- Fill out the form to create an account.
+- An email with a verification link will be sent.
+- Click the link to activate your account.
+- Proceed to log in via http://localhost:4000/accounts/login
 
-## Running unit tests
+### Other Features (Team Collaboration)
+- Profile Management: /profile
+- Admin Dashboard: /admin
+- Role-based access redirects based on user roles.
+- Password reset and recovery available via /accounts/reset-password
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## 4. Testing: 
+- Functional Testing
+- Verified registration, email confirmation, and login processes.
+- Security Testing
+- Input validation, CSRF protection, and token verification tested.
 
-## Running end-to-end tests
+## 5. Contributing:
+Implement the sign-up, verification, and login components in the Angular boilerplate.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Create a new branch for the feature
+git checkout -b MADULA-frontend-profile-admin-fake-backend
 
-## Further help
+### Make changes, then stage them
+git add . 
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Commit changes often with  messages
+git commit -m "Implement profile management, admin dashboard, and fake backend"
+
+### Push branch and submit a Pull Request
+git push origin MADULA-frontend-profile-admin-fake-backend
+
+## 6. License
+
+Open a Pull Request (PR) on GitHub targeting the main branch.
+Then the Group Leader will review and merge into main.
+
