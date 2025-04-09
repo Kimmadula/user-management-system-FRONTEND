@@ -10,16 +10,19 @@ git clone https://github.com/Kimmadula/user-management-system-FRONTEND.git
 cd user-managament-system-FRONTEND
 
 ### Install Dependencies
-- npm install
-- npm install bootstrap
-- npm install -g @angular/cli
-
+``` bash
+npm install
+npm install bootstrap
+npm install -g @angular/cli
+```
 ### Create initial starter app
+``` bash
 ng new user-management-system
-
+```
 ### Run Angular app
+``` bash
 ng serve
-
+```
 ## 3. Usage:
 - Email Sign-Up & Verification
 
@@ -45,20 +48,24 @@ ng serve
 Implement the sign-up, verification, and login components in the Angular boilerplate.
 
 ### Create a new branch for the feature
+``` bash
 git checkout -b MADULA-frontend-profile-admin-fake-backend
 git checkout -b Gijan-frontend-signup-auth
-
+```
 ### Make changes, then stage them
+``` bash
 git add . 
-
+```
 ### Commit changes often with  messages
+``` bash
 git commit -m "Implement email sign-up, verification, and authentication"
 git commit -m "Implement profile management, admin dashboard, and fake backend"
-
+```
 ### Push branch and submit a Pull Request
+``` bash
 git push origin Gijan-frontend-signup-auth
 git push origin MADULA-frontend-profile-admin-fake-backend
-
+```
 
 ## 6. License
 Open a Pull Request (PR) on GitHub targeting the main branch.
