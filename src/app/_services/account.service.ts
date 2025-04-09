@@ -19,15 +19,10 @@ export class AccountService {
     this.account = this.accountSubject.asObservable(); 
   }
   
-  public get accountValue(): Account {
-  const account = this.accountSubject.value;
-  if (!account) {
-    throw new Error('Account is null');
+  public get accountValue(): Account | null {
+    return this.accountSubject.value;
   }
-  return account;
-}
-
-
+  
   login(email: string, password: string) {
     return this.http.post<any>(`${baseUrl}/authenticate`, { email, password }, { withCredentials: true })
       .pipe(map(account => {
@@ -104,7 +99,6 @@ export class AccountService {
         }
       }));
   }
-
 
   private refreshTokenTimeout: any;
 
