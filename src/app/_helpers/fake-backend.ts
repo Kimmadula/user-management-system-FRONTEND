@@ -8,7 +8,7 @@ import { Account, Role } from '../_models';
 
 // array in local storage for accounts
 const accountsKey = 'angular-10-signup-verification-boilerplate-accounts';
-let accounts = JSON.parse(localStorage.getItem(accountsKey) || '[]');
+let accounts = JSON.parse(localStorage.getItem(accountsKey) ?? '[]');
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -24,15 +24,15 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             switch (true) {
                 case url.endsWith('/accounts/authenticate') && method === 'POST':
                     return authenticate();
-                case url.endsWith('/accounts/refresh—token') && method === 'POST':
+                case url.endsWith('/accounts/refresh-token') && method === 'POST':
                     return refreshToken() ;
                 case url.endsWith('/accounts/revoke-token') && method === 'POST':
                     return revokeToken();
-                case url.endsWith('/accountS/register') && method === 'POST':
+                case url.endsWith('/accounts/register') && method === 'POST':
                     return register();
                 case url.endsWith('/accounts/verify-email') && method === 'POST':
                     return verifyEmail();
-                case url.endsWith('/accounts/forgot—password') && method === 'POST':
+                case url.endsWith('/accounts/forgot-password') && method === 'POST':
                     return forgotPassword();
                 case url.endsWith('/accounts/validate-reset-token') && method === 'POST':
                     // const body = JSON.parse(requestBody);
@@ -123,7 +123,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         account.id =  newAccountId();
-            if (account.Id === 1) {
+            if (account.id === 1) {
                 account.role = Role.Admin;
             } else {
                 account.role = Role.User;

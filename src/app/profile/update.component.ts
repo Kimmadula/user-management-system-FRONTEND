@@ -23,6 +23,11 @@ export class UpdateComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        if (!this.account) {
+            this.router.navigate(['/account/login']); 
+            return;
+        }
+
         this.form = this.formBuilder.group({
             title: [this.account.title, Validators.required],
             firstName: [this.account.firstName, Validators.required],
@@ -40,17 +45,12 @@ export class UpdateComponent implements OnInit {
 
     onSubmit() {
         this.submitted = true;
-    
-        // reset alerts on submit
         this.alertService.clear();
     
-        // stop here if form is invalid
-        if (this.form.invalid) {
-            return;
-        }
+        if (this.form.invalid || !this.account) return;
     
         this.loading = true;
-        this.accountService.update(String(this.account.id!), this.form.value)
+        this.accountService.update(String(this.account.id), this.form.value)
             .pipe(first())
             .subscribe({
                 next: () => {
@@ -64,14 +64,16 @@ export class UpdateComponent implements OnInit {
             });
     }
     
+    
     onDelete() {
-        if (confirm('Are you sure?')) {
+        if (confirm('Are you sure?') && this.account) {
             this.deleting = true;
-            this.accountService.delete(String(this.account.id!))
+            this.accountService.delete(String(this.account.id))
                 .pipe(first())
                 .subscribe(() => {
                     this.alertService.success('Account deleted successfully', { keepAfterRouteChange: true });
                 });
         }
     }
+    
 }    

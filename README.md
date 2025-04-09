@@ -11,6 +11,7 @@ cd user-managament-system-FRONTEND
 
 ### Install Dependencies
 - npm install
+- npm install bootstrap
 - npm install -g @angular/cli
 
 ### Create initial starter app
@@ -21,7 +22,8 @@ ng serve
 
 ## 3. Usage:
 - Email Sign-Up & Verification
-- Navigate to http://localhost:4000/accounts/register
+
+- Navigate to http://localhost:4200/accounts/register
 - Fill out the form to create an account.
 - An email with a verification link will be sent.
 - Click the link to activate your account.
@@ -43,19 +45,22 @@ ng serve
 Implement the sign-up, verification, and login components in the Angular boilerplate.
 
 ### Create a new branch for the feature
+git checkout -b MADULA-frontend-profile-admin-fake-backend
 git checkout -b Gijan-frontend-signup-auth
 
 ### Make changes, then stage them
-git add. 
+git add . 
 
 ### Commit changes often with  messages
 git commit -m "Implement email sign-up, verification, and authentication"
+git commit -m "Implement profile management, admin dashboard, and fake backend"
 
 ### Push branch and submit a Pull Request
 git push origin Gijan-frontend-signup-auth
+git push origin MADULA-frontend-profile-admin-fake-backend
+
 
 ## 6. License
-
 Open a Pull Request (PR) on GitHub targeting the main branch.
 Then the Group Leader will review and merge into main.
 
