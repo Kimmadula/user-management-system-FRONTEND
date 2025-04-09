@@ -5,10 +5,10 @@ A full-stack user management system built with Node.js, MySQL, and Angular 17. T
 
 ## 2. Installation Instructions:
 ### Clone the repository
+``` bash
 git clone https://github.com/Kimmadula/user-management-system-FRONTEND.git
-
 cd user-managament-system-FRONTEND
-
+```
 ### Install Dependencies
 ``` bash
 npm install
