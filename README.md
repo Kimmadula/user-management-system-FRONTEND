@@ -68,6 +68,4 @@ git push origin MADULA-frontend-profile-admin-fake-backend
 ```
 
 ## 6. License
-Open a Pull Request (PR) on GitHub targeting the main branch.
-Then the Group Leader will review and merge into main.
-
+MIT License
