@@ -13,12 +13,14 @@ export class AuthGuard {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const account = this.accountService.accountValue;
         if (!account) {
-          this.router.navigate(['/account/login']);
-          return false;
+            this.router.navigate(['/account/login']);
+            return false;
         }
-        return true;        
-
-        this.router.navigate(['/account/login'], { queryParams: { returnUrl: state.url }});
-        return false;
+        // Check for admin role
+        if (account.role !== 'Admin' && state.url.includes('/admin')) {
+            this.router.navigate(['/']);
+            return false;
+        }
+        return true;
     }
 }
