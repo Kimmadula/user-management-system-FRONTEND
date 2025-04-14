@@ -52,8 +52,14 @@ export class RegisterComponent implements OnInit {
     this.accountService.register(this.form.value)
       .pipe(first())
       .subscribe({
-        next: () => {
-          this.alertService.success('Registration successful, please check your email for verification instructions', { keepAfterRouteChange: true });
+        next: (response) => {
+          
+          // Task 1: Check if the registered user is an admin
+          if (response === 'Admin') {
+            this.alertService.success('Admin registration successful. You can now login directly.', { keepAfterRouteChange: true });
+          } else {
+            this.alertService.success('Registration successful, please check your email for verification instructions', { keepAfterRouteChange: true });
+          }
           this.router.navigate(['../login'], { relativeTo: this.route });
         },
         error: error => {
